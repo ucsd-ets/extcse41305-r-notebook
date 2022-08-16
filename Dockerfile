@@ -26,13 +26,13 @@ RUN chmod +x /run_jupyter.sh
 
 # 3) install packages using notebook user
 ARG KERNEL=cse41305
-ENV CONDA_PREFIX=/opt/conda/envs/$KERNEL
+ENV CONDA_PREFIX=/opt/conda/envs/${KERNEL}
 COPY env.yml /tmp
 ENV CONDA_CUDA_OVERRIDE="11.2"
 RUN conda env create --file /tmp/env.yml && \
     eval "$(conda shell.bash hook)" && \
-    conda activate $KERNEL && \
-    python -m ipykernel install --name=$KERNEL
+    conda activate ${KERNEL} && \
+    python -m ipykernel install --name=${KERNEL}
 
 USER jovyan
 
