@@ -1,15 +1,15 @@
 name: Docker Workflow
 
 on:
-  push:
-    branches:
-    - main
-    - master
-    paths:
-      - "requirements.txt"
-      - "Dockerfile"
-      - ".github/workflows/main.yml"
-  workflow_dispatch:
+  # push:
+  #   branches:
+  #   - main
+  #   - master
+  #   paths:
+  #     - "requirements.txt"
+  #     - "Dockerfile"
+  #     - ".github/workflows/main.yml"
+  # workflow_dispatch:
 
 jobs:
   docker:
