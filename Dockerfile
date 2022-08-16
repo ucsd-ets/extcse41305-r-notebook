@@ -4,7 +4,7 @@
 # base notebook, contains Jupyter and relevant tools
 # See https://github.com/ucsd-ets/datahub-docker-stack/wiki/Stable-Tag
 # for a list of the most current containers we maintain
-ARG BASE_CONTAINER=ucsdets/scipy-ml-notebook:2022.3-stable
+ARG BASE_CONTAINER=ucsdets/datahub-base-notebook:2022.3-stable
 
 FROM $BASE_CONTAINER
 
@@ -12,6 +12,9 @@ LABEL maintainer="UC San Diego ITS/ETS <ets-consult@ucsd.edu>"
 
 # 2) change to root to install packages
 USER root
+
+COPY run_jupyter.sh /
+RUN chmod +x /run_jupyter.sh
 
 # RUN apt-get -y install htop
 # RUN pip install --no-cache-dir \
