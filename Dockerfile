@@ -32,6 +32,8 @@ ENV CONDA_CUDA_OVERRIDE="11.2"
 RUN conda env create --file /tmp/env.yml && \
     eval "$(conda shell.bash hook)" && \
     conda activate ${KERNEL} && \
+    mkdir -p $CONDA_PREFIX/etc/conda/activate.d && \
+    echo 'export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$CONDA_PREFIX/lib/' > $CONDA_PREFIX/etc/conda/activate.d/env_vars.sh && \
     python -m ipykernel install --name=${KERNEL}
 
 USER jovyan
