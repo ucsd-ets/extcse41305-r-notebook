@@ -28,7 +28,8 @@ RUN chmod +x /run_jupyter.sh
 ARG KERNEL=cse41305
 ENV CONDA_PREFIX=/opt/conda/envs/${KERNEL}
 COPY env.yml /tmp
-ENV CONDA_CUDA_OVERRIDE="11.2"
+#ENV CONDA_CUDA_OVERRIDE="11.2"
+RUN conda install nb_conda_kernels
 RUN conda env create --file /tmp/env.yml && \
     eval "$(conda shell.bash hook)" && \
     conda activate ${KERNEL} && \
