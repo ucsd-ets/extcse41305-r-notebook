@@ -1,35 +1,41 @@
-name: Docker Workflow
-
+name: Build notebook
 on:
+  schedule:
+    - cron: '0 2 * * *'
   push:
-    branches:
-    - main
-    - master
-    # paths:
-    #   - "requirements.txt"
-    #   - "Dockerfile"
-    #   - ".github/workflows/main.yml"
-  workflow_dispatch:
+
+env:
+  REGISTRY: ghcr.io
+  IMAGE_NAME: ${{ github.repository }}
 
 jobs:
-  docker:
+  build-and-push-image:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+
     steps:
-      -
-        name: Set up QEMU
-        uses: docker/setup-qemu-action@v2
-      -
-        name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v2
-      -
-        name: Login to DockerHub
+      - name: Checkout notebook
+        uses: actions/checkout@v3
+
+      - name: Log in to registry
         uses: docker/login-action@v2
         with:
-          username: ${{ secrets.DOCKERHUB_USERNAME }}
-          password: ${{ secrets.DOCKERHUB_TOKEN }}
-      -
-        name: Build and push
-        uses: docker/build-push-action@v3
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Generate tags and labels
+        id: meta
+        uses: docker/metadata-action@v4
         with:
+          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+
+      - name: Build and push notebook
+        uses: docker/build-push-action@v4
+        with:
+          context: .
           push: true
-          tags: ucsdets/extcse41305-notebook:latest
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
