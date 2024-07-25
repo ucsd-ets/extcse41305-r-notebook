@@ -21,7 +21,7 @@ RUN mamba install -c conda-forge r-neuralnet
 
 USER jovyan
 
-# RUN conda install -y scikit-learn
+# RUN conda install -y scikit-learn -c conda-forge
 
 # RUN pip install --no-cache-dir networkx scipy
 
